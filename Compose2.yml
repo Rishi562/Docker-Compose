@@ -1,0 +1,21 @@
+#to run a compose file use docker-compose -f compose1.yml up
+
+version: "3"         #first we describe a version
+services:            #containers are called services in here
+  mongodbx:           #hit the tab and name the container 
+    image: mongo   #descibe the image that you want to be downloaded/run
+    ports:                #ports are written in a array format
+      - "27017:27017"
+    environment:          #ports and evvironment variables are defined after "- "
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+  mongo-expressx: 
+    image: mongo-express
+    restart: always       #this is added because express depends on mongo so it will restart until it finds a connection
+    ports:
+      - "8081:8081"
+    environment:                #all containers share same network in a compose file
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_SERVER=mongodbx
+      
